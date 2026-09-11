@@ -1994,13 +1994,14 @@ export class CustomerTransactionService {
       formAId: transaction.formAId,
       taxClearanceNumber: transaction.taxClearanceNumber,
       customerType: userRecord?.customerType ?? null,
-      tinNumber: userKyc?.tin ?? stepTin ?? null,
+      // TIN is a BTA/business-related field — not applicable to PTA transactions.
+      tinNumber: transaction.type === 'PTA' ? null : (userKyc?.tin ?? stepTin ?? null),
 
       // Personal info used during creation
       personalInfo: {
         bvn: userKyc?.bvn ?? null,
         nin: userKyc?.nin ?? null,
-        tinNumber: userKyc?.tin ?? stepTin ?? null,
+        tinNumber: transaction.type === 'PTA' ? null : (userKyc?.tin ?? stepTin ?? null),
         admissionType,
         studentName,
         studentNin,
